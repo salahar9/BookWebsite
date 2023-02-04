@@ -1,20 +1,24 @@
 package com.books.models;
 
-import jakarta.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Users")
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id")
 	private long id;
-	
 
 	@Column(name = "lname")
 	private String lname;
@@ -24,7 +28,17 @@ public class User {
 	private String password;
 	@Column(name = "username")
 	private String username;
-	
+	@Column(name = "role")
+	private String role;
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -32,6 +46,7 @@ public class User {
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getLname() {
 		return lname;
 	}
@@ -62,6 +77,47 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	@OneToMany(mappedBy = "user")
+	private Set<Collections> Collections = new HashSet<>();
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	private Set<BookClubUsers> bookclubs;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	private Set<WishList> wishlist;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	private Set<Download> downloads;
+
+	public Set<Collections> getCollections() {
+		return Collections;
+	}
+
+	public void setCollections(Set<Collections> collections) {
+		Collections = collections;
+	}
+
+	public Set<BookClubUsers> getBookclubs() {
+		return bookclubs;
+	}
+
+	public void setBookclubs(Set<BookClubUsers> bookclubs) {
+		this.bookclubs = bookclubs;
+	}
+
+	public Set<WishList> getWishlist() {
+		return wishlist;
+	}
+
+	public void setWishlist(Set<WishList> wishlist) {
+		this.wishlist = wishlist;
+	}
+
+	public Set<Download> getDownloads() {
+		return downloads;
+	}
+
+	public void setDownloads(Set<Download> downloads) {
+		this.downloads = downloads;
 	}
 
 }

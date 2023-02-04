@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan("com.books.models")
 @EnableJpaRepositories("com.books.repository")
 @ComponentScan("com.books.*")
-
 @SpringBootApplication
 public class MainFunction {
 
