@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.books.DTOs.JsonResponse;
+import com.books.DTOs.ReviewInsert;
+import com.books.DTOs.Test;
 import com.books.models.Book;
 import com.books.models.BookClub;
 import com.books.models.BookClubDiscussion;
 import com.books.models.BookClubUsers;
 import com.books.models.User;
 import com.books.models.WishList;
-import com.books.services.JsonResponse;
-import com.books.services.Test;
 import com.books.services.UserService;
 
 //import models.User;
@@ -131,6 +132,12 @@ class UserController {
 	public JsonResponse booksamegenres(Principal principal, @RequestBody Test book) {
 		return this.service.booksamegenres(principal, book);
 
+	}
+
+	@PostMapping("addreview")
+	@ResponseBody
+	public JsonResponse addReview(Principal principal, @RequestBody ReviewInsert r) {
+		return this.service.addReview(principal, r);
 	}
 
 }

@@ -10,11 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.books.DTOs.JsonResponse;
+import com.books.DTOs.ReviewInsert;
+import com.books.DTOs.Test;
 import com.books.models.Book;
 import com.books.models.BookClub;
 import com.books.models.BookClubDiscussion;
 import com.books.models.BookClubUsers;
 import com.books.models.Download;
+import com.books.models.Review;
 import com.books.models.User;
 import com.books.models.WishList;
 import com.books.repository.BookClubDiscussionRepository;
@@ -22,6 +26,7 @@ import com.books.repository.BookClubRepository;
 import com.books.repository.BookClubUserRepository;
 import com.books.repository.BookRepository;
 import com.books.repository.DownloadRepository;
+import com.books.repository.ReviewRepository;
 import com.books.repository.UserRepository;
 import com.books.repository.WishListRepository;
 
@@ -35,13 +40,14 @@ public class UserService {
 	private final BookClubRepository BookClubRepository;
 	private final WishListRepository WishListRepository;
 	private final DownloadRepository DownloadRepository;
+	private final ReviewRepository ReviewRepository;
 	Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	@Autowired
-	UserService(UserRepository repository, BookClubRepository bookclubrepository, BookRepository bookrepository,
-			DownloadRepository DownloadRepository, BookClubDiscussionRepository BookClubDiscussionRepository,
-			PasswordEncoder encoder, WishListRepository WishListRepository,
-			BookClubUserRepository BookClubUserRepository) {
+	UserService(ReviewRepository ReviewRepository, UserRepository repository, BookClubRepository bookclubrepository,
+			BookRepository bookrepository, DownloadRepository DownloadRepository,
+			BookClubDiscussionRepository BookClubDiscussionRepository, PasswordEncoder encoder,
+			WishListRepository WishListRepository, BookClubUserRepository BookClubUserRepository) {
 		this.BookClubUserRepository = BookClubUserRepository;
 		this.repository = repository;
 		this.BookRepository = bookrepository;
@@ -49,6 +55,7 @@ public class UserService {
 		this.BookClubDiscussionRepository = BookClubDiscussionRepository;
 		this.DownloadRepository = DownloadRepository;
 		this.WishListRepository = WishListRepository;
+		this.ReviewRepository = ReviewRepository;
 		this.encoder = encoder;
 	}
 
@@ -200,6 +207,21 @@ public class UserService {
 		j.setStatus(true);
 		j.setBooks(b);
 
+		return j;
+	}
+
+	public JsonResponse addReview(Principal principal, ReviewInsert r) {
+		logger.warn(r.getBook().toString());
+		Book b = BookRepository.findById(r.getBook()).get();
+		User u = repository.findByUsername(((principal).getName()));
+		Review rev = new Review();
+		rev.setBook(b);
+		rev.setUser(u);
+		rev.setCommentaire(r.getCommentaire());
+		rev.setRating(r.getRating());
+		ReviewRepository.save(rev);
+		JsonResponse j = new JsonResponse();
+		j.setStatus(true);
 		return j;
 	}
 

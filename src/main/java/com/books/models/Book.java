@@ -1,5 +1,6 @@
 package com.books.models;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -8,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -31,14 +34,22 @@ public class Book {
 	private String pathPdf;
 	@Column(name = "pathEpub")
 	private String pathEpub;
-	@ManyToMany(mappedBy = "Books", cascade = { CascadeType.MERGE })
-	private Set<Genre> genres;
+	@Column(name = "cover")
+	private String cover;
+	@Column(name = "description")
+	private String description;
+	@ManyToMany(cascade = { CascadeType.MERGE })
+	@JoinTable(name = "GenreBookmapping", joinColumns = @JoinColumn(name = "idBook"), inverseJoinColumns = @JoinColumn(name = "idGenre"))
+	private Set<Genre> genres = new HashSet<>();
 	@OneToMany(mappedBy = "book", cascade = CascadeType.PERSIST)
 	// @JsonManagedReference("book_wishlist")
 	private Set<WishList> wishlist;
 	@OneToMany(mappedBy = "book", cascade = CascadeType.PERSIST)
 	// @JsonManagedReference("book_downloads")
 	private Set<Download> downloads;
+	@OneToMany(mappedBy = "book", cascade = CascadeType.PERSIST)
+	// @JsonManagedReference("book_downloads")
+	private Set<Review> reviews;
 
 	public long getId() {
 		return id;
@@ -118,6 +129,30 @@ public class Book {
 
 	public void setDownloads(Set<Download> downloads) {
 		this.downloads = downloads;
+	}
+
+	public Set<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Set<Review> reviews) {
+		this.reviews = reviews;
+	}
+
+	public String getCover() {
+		return cover;
+	}
+
+	public void setCover(String cover) {
+		this.cover = cover;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

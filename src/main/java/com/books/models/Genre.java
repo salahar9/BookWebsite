@@ -11,8 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
@@ -25,8 +23,31 @@ public class Genre {
 	private long id;
 	@Column(name = "nomGenre")
 	private String nomGenre;
-	@ManyToMany(cascade = { CascadeType.MERGE })
+	@ManyToMany(mappedBy = "genres", cascade = { CascadeType.MERGE })
 	@JsonIgnore
-	@JoinTable(name = "GenreBookMapping", joinColumns = @JoinColumn(name = "idGenre"), inverseJoinColumns = @JoinColumn(name = "idBook"))
-	private Set<Book> Books = new HashSet<>();
+	private Set<Book> books = new HashSet<>();
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getNomGenre() {
+		return nomGenre;
+	}
+
+	public void setNomGenre(String nomGenre) {
+		this.nomGenre = nomGenre;
+	}
+
+	public Set<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(Set<Book> books) {
+		this.books = books;
+	}
 }

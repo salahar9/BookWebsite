@@ -3,6 +3,8 @@ package com.books.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,6 +26,7 @@ public class User {
 	private String lname;
 	@Column(name = "fname")
 	private String fname;
+	@JsonIgnore
 	@Column(name = "password")
 	private String password;
 	@Column(name = "username")
@@ -87,6 +90,11 @@ public class User {
 	private Set<WishList> wishlist;
 	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
 	private Set<Download> downloads;
+	// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+	// property = "idReview")
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	private Set<Review> reviews;
 
 	public Set<Collections> getCollections() {
 		return Collections;
@@ -118,6 +126,14 @@ public class User {
 
 	public void setDownloads(Set<Download> downloads) {
 		this.downloads = downloads;
+	}
+
+	public Set<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Set<Review> reviews) {
+		this.reviews = reviews;
 	}
 
 }

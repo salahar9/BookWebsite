@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.books.models.Book;
+import com.books.DTOs.BookInsert;
+import com.books.DTOs.JsonResponse;
 import com.books.services.AdminService;
-import com.books.services.JsonResponse;
 
 //import models.User;
 //import models.UserRepository;
@@ -28,7 +28,7 @@ class AdminController {
 
 	@PostMapping("addbook")
 	@ResponseBody
-	JsonResponse addbook(@RequestBody Book book) {
+	JsonResponse addbook(@RequestBody BookInsert book) {
 		Boolean resp = service.addbook(book);
 		JsonResponse res = new JsonResponse();
 		res.setStatus(resp);
